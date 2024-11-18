@@ -1,0 +1,28 @@
+.quiz-page {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.quiz-page h1 {
+  font-size: 2.5rem;
+  color: #2196F3;
+}
+
+.quiz-page p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.start-quiz-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #2196F3;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.start-quiz-btn:hover {
+  background-color: #1976D2;
+}

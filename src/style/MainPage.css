@@ -1,0 +1,15 @@
+.main-page {
+  text-align: center;
+  margin-top: 50px;
+  font-family: Arial, sans-serif;
+}
+
+.main-page h1 {
+  font-size: 2.5rem;
+  color: #4CAF50;
+}
+
+.main-page p {
+  font-size: 1.2rem;
+  color: #555;
+}

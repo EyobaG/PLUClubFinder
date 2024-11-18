@@ -1,0 +1,31 @@
+.search-page {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.search-page h1 {
+  font-size: 2rem;
+  color: #FF9800;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 1rem;
+  margin: 20px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #FF9800;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background-color: #F57C00;
+}

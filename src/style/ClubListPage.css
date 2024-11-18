@@ -1,0 +1,27 @@
+.club-list-page {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.club-list-page h1 {
+  font-size: 2.5rem;
+  color: #9C27B0;
+}
+
+.club-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px auto;
+  width: 50%;
+}
+
+.club-list li {
+  font-size: 1.2rem;
+  color: #555;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.club-list li:last-child {
+  border-bottom: none;
+}

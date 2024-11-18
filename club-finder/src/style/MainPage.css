@@ -1,0 +1,86 @@
+/* src/style/MainPage.css */
+.main-page {
+  text-align: center;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.quiz-section {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 2px solid #4caf50;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-section h2 {
+  color: #4caf50;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.quiz-section p {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.quiz-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.quiz-link:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+/* Animation for fade-in effect */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply animation to the quiz section */
+.quiz-section {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 2px solid #4caf50;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Style for the quiz link */
+.quiz-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect: scale and shadow */
+.quiz-link:hover {
+  background-color: #388e3c;
+  transform: scale(1.1);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
