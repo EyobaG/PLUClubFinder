@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../style/MainPage.css";
 
 const MainPage = () => {
+  const sampleClubs = ["Drama Club", "Chess Club", "Coding Club", "Photography Club"];
   return (
     <div className="main-page">
       <div className="welcome">
@@ -17,6 +18,16 @@ const MainPage = () => {
         <Link to="/quiz" className="quiz-link">
           Start Quiz
         </Link>
+      </div>
+    
+
+      <div className="club-list-page">
+      <h1>List of Clubs</h1>
+      <ul className="club-list">
+          {sampleClubs.map((club, index) => (
+              <li key={index}>{club}</li>
+          ))}
+      </ul>
       </div>
     </div>
   );
