@@ -5,13 +5,27 @@
   display: flex;
   flex-direction: column; /* Stack title and links */
   align-items: center; /* Center horizontally */
-  background-color: #fdd700;
+  justify-content: center;
+  background-color: #ffb413;
   color: white;
   padding: 10px 20px;
   z-index: 1000;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  margin-top: 15px;
+  margin-left: 1%;
+  margin-right: 1%;
+  border-radius: 0.5cm;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.navbar a {
+  color: rgb(95, 66, 224);
+  text-decoration: none;
+  padding: 10px 20px; /* Adds padding inside the link */
+  margin: 0 15px; /* Adds space between the links (15px on both left and right) */
+  transition: background-color 0.3s ease;
+}
+
 
 .navbar-title {
   font-size: 1.8rem;
@@ -30,10 +44,11 @@
 
 .navbar-item {
   text-decoration: none;
-  color: rgb(0, 0, 0);
+  color: rgb(95, 66, 224);
   font-size: 1.2rem;
   font-weight: bold;
   transition: color 0.3s ease, transform 0.3s ease;
+  
 }
 
 .navbar-item:hover {

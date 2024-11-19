@@ -5,7 +5,9 @@ import "../style/MainPage.css";
 const MainPage = () => {
   return (
     <div className="main-page">
-      <h1>Welcome to PLU Club Finder!</h1>
+      <div className="welcome">
+        <h1>Welcome to PLU Club Finder!</h1>
+      </div>
       <p>Find the clubs that match your interests!</p>
       
       {/* Quiz Section */}
