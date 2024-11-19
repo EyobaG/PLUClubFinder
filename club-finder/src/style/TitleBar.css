@@ -9,7 +9,6 @@
     margin-left: 1%;
     margin-right: 1%;
     border-radius: 0.5cm; */
-    text-decoration: none;
   }
 
   .title-container {
@@ -18,7 +17,13 @@
     justify-content: center;
     color: #1D1F91;
   }
-  
+
+  .main-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit;
+    display: flex;
+    align-items: center;
+  }
   
   .logo {
     width: 70px; 
