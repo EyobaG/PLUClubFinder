@@ -1,4 +1,3 @@
-import TitleBar from "./components/TitleBar";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import MainPage from "./components/MainPage";
@@ -6,6 +5,8 @@ import ClubListPage from "./components/ClubListPage";
 import QuizPage from "./components/QuizPage";
 import SearchPage from "./components/SearchPage";
 import "./App.css";
+import TitleBar from "./components/TitleBar";
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -46,6 +47,8 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
         </Routes>
       </div>
+      <Footer />
+      
     </Router>
   );
 }
