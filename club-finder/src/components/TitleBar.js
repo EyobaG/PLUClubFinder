@@ -9,7 +9,7 @@ const TitleBar = () => {
       <div className="title-container">
         <Link to="/" className="main-link">
           <img src={logo} alt="PLU Logo" className="logo" />
-          PLU Club Finder
+          <h1>PLU Club Finder</h1>
         </Link>
       </div>
     </header>
