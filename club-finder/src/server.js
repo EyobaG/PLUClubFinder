@@ -2,8 +2,7 @@
 import express from 'express';
 import mysql from 'mysql2';
 import dotenv from 'dotenv';
-import cors from 'cors';  // Import CORS middleware
-import app from './App.js';  // Import routes and app configuration from app.js
+import cors from 'cors';
 
 dotenv.config(); // Load environment variables
 
@@ -11,6 +10,9 @@ const server = express();
 
 // Enable CORS to allow requests from your React frontend (running on localhost:3000)
 server.use(cors()); // This will enable CORS for all routes by default
+
+// Middleware to parse JSON data in requests
+server.use(express.json());
 
 // Create MySQL connection
 const db = mysql.createConnection({
@@ -29,14 +31,20 @@ db.connect((err) => {
   console.log('Connected to the MySQL database');
 });
 
-// Middleware to parse JSON data in requests
-server.use(express.json());
-
-// Use the app.js routes and middleware
-server.use(app);
+// Route to fetch clubs data
+server.get('/ClubFinder', (req, res) => {
+  // Query your database and return the clubs data
+  db.query('SHOW TABLES FROM ClubFinder', (err, results) => {
+    if (err) {
+      console.error('Error fetching clubs:', err);
+      return res.status(500).json({ error: 'Error fetching clubs data' });
+    }
+    res.json(results);
+  });
+});
 
 // Start the Express server
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import MainPage from "./components/MainPage";
@@ -15,7 +16,6 @@ function App() {
   useEffect(() => {
     const fetchClubs = async () => {
       try {
-        // Update the URL to match the backend server URL (localhost:5000)
         const response = await fetch("http://localhost:5000/ClubFinder");
         if (!response.ok) {
           throw new Error("Error fetching clubs data");
@@ -37,18 +37,10 @@ function App() {
         {/* Navigation Bar */}
         <nav className="navbar">
           <ul className="navbar-links">
-            <li>
-              <Link to="/" className="navbar-item">Home</Link>
-            </li>
-            <li>
-              <Link to="/clubs" className="navbar-item">Clubs</Link>
-            </li>
-            <li>
-              <Link to="/quiz" className="navbar-item">Quiz</Link>
-            </li>
-            <li>
-              <Link to="/search" className="navbar-item">Search</Link>
-            </li>
+            <li><Link to="/" className="navbar-item">Home</Link></li>
+            <li><Link to="/clubs" className="navbar-item">Clubs</Link></li>
+            <li><Link to="/quiz" className="navbar-item">Quiz</Link></li>
+            <li><Link to="/search" className="navbar-item">Search</Link></li>
           </ul>
         </nav>
 
