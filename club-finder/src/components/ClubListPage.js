@@ -1,99 +1,117 @@
 import React, {useState, useEffect} from 'react';
 import '../style/ClubListPage.css';
+import '../style/Accordion.css';
 
 function ClubListPage() {
-  const [clubs, setClubs] = useState([]);
-  const [contacts, setContacts] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [clubs, setClubs] = useState([]);
+    const [contacts, setContacts] = useState([]);
+    const [descriptions, setDescriptions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(null);
 
-  // Fetches all needed data when the component mounts
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Clubs
-        const clubsResponse = await fetch("http://localhost:5000/api/clubs");
-        if (!clubsResponse.ok) {
-          throw new Error("Error fetching clubs data");
+    // Fetches all needed data when the component mounts
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+
+            // Clubs
+            const clubsResponse = await fetch("http://localhost:5000/api/clubs");
+            if (!clubsResponse.ok) {
+            throw new Error("Error fetching clubs data");
+            }
+            const clubsData = await clubsResponse.json();
+            setClubs(clubsData);
+
+            // Contacts
+            const contactsResponse = await fetch("http://localhost:5000/api/contacts");
+            if (!contactsResponse.ok) {
+            throw new Error("Error fetching contacts data");
+            }
+            const contactsData = await contactsResponse.json();
+            setContacts(contactsData);
+
+            // Descriptions
+            const descriptionsResponse = await fetch("http://localhost:5000/api/descriptions");
+            if (!descriptionsResponse.ok) {
+            throw new Error("Error fetching descriptions data");
+            }
+            const descriptionsData = await descriptionsResponse.json();
+            setDescriptions(descriptionsData);
+
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setError("Failed to fetch data");
+            setLoading(false);  // Stop loading even if there's an error
         }
-        const clubsData = await clubsResponse.json();
-        setClubs(clubsData);
 
-        // Contacts
-        const contactsResponse = await fetch("http://localhost:5000/api/contacts");
-        if (!contactsResponse.ok) {
-          throw new Error("Error fetching contacts data");
+        };
+
+        fetchData();  // Trigger data fetching when component mounts
+    }, []); // Empty dependency array to run once when the component mounts
+
+    const toggleAccordion = (index) => {
+        if (activeIndex === index) {
+            setActiveIndex(null);
+        } else {
+            setActiveIndex(index);
         }
-        const contactsData = await contactsResponse.json();
-        setContacts(contactsData);
-
-        // Descriptions
-        const descriptionsResponse = await fetch("http://localhost:5000/api/descriptions");
-        if (!descriptionsResponse.ok) {
-          throw new Error("Error fetching descriptions data");
-        }
-        const descriptionsData = await descriptionsResponse.json();
-        setDescriptions(descriptionsData);
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("Failed to fetch data");
-        setLoading(false);  // Stop loading even if there's an error
-      }
-
     };
 
-    fetchData();  // Trigger data fetching when component mounts
-  }, []); // Empty dependency array to run once when the component mounts
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    if (error) {
+        return <div>{error}</div>;
+    }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  return (
-    <div className="club-list-page">
-      <h1>List of Clubs</h1>
-      {clubs.length > 0 ? (
-        <ul>
-          {clubs.map(club => {
-            const contact = contacts.find(contact => contact.ClubID === club.ClubID);
-            const description = descriptions.find(description => description.ClubID === club.ClubID);
-            return (
-              <li key={club.ClubID}>
-                {club.ClubName}, {contact?.ClubContact || 'No contact info'} <br />
-                Desc: {description?.Description || 'No description info'}
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p>No clubs available</p>
-      )}
-    </div>
-  );
+    return (
+        <div className="club-list-page">
+            <h1>List of Clubs</h1>
+            {clubs.length > 0 ? (
+                <div className="accordion">
+                    {clubs.map((club, index) => {
+                        const contact = contacts.find(contact => contact.ClubID === club.ClubID);
+                        const description = descriptions.find(description => description.ClubID === club.ClubID);
+                        return (
+                            <div key={club.ClubID} className="accordion-item">
+                                <div className="accordion-header" onClick={() => toggleAccordion(index)}>
+                                    {club.ClubName}
+                                </div>
+                                {activeIndex === index && (
+                                    <div className="accordion-content">
+                                        <p>{description?.Description || 'No description info'}</p>
+                                        <p>Contact Info: {contact?.ClubContact || 'No contact info'}</p>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            ) : (
+                <p>No clubs available</p>
+            )}
+        </div>
+    );
 }
 
 export default ClubListPage;
 
-/*const ClubListPage = () => {
-    const sampleClubs = ["Drama Club", "Chess Club", "Coding Club", "Photography Club"];
-    
-    return (
-        <div className="club-list-page">
-            <h1>List of Clubs</h1>
-            <ul className="club-list">
-                {sampleClubs.map((club, index) => (
-                    <li key={index}>{club}</li>
-                ))}
-            </ul>
-        </div>
-    );
-};
+    /*const ClubListPage = () => {
+        const sampleClubs = ["Drama Club", "Chess Club", "Coding Club", "Photography Club"];
+        
+        return (
+            <div className="club-list-page">
+                <h1>List of Clubs</h1>
+                <ul className="club-list">
+                    {sampleClubs.map((club, index) => (
+                        <li key={index}>{club}</li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
 
 export default ClubListPage;*/

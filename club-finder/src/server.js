@@ -14,6 +14,7 @@ const server = express();
 server.use(cors()); // Enable CORS to allow requests from your React frontend (running on localhost:3000)
 server.use(express.json()); // Middleware to parse JSON data in requests
 
+// Set urls for fetching data from the backend
 server.use('/api/clubs', clubRoutes);
 server.use('/api/contacts', contactRoutes);
 server.use('/api/descriptions', descriptionRoutes);
