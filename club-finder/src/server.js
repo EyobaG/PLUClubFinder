@@ -1,11 +1,18 @@
-import mysql from "mysql2"
-import dotenv from "dotenv"
-import express from "express"
-dotenv.config();
+// server.js
+import express from 'express';
+import mysql from 'mysql2';
+import dotenv from 'dotenv';
+import cors from 'cors';  // Import CORS middleware
+import app from './App.js';  // Import routes and app configuration from app.js
 
-const app = express();
-const PORT = process.env.MYSQL_PORT || 3000;
+dotenv.config(); // Load environment variables
 
+const server = express();
+
+// Enable CORS to allow requests from your React frontend (running on localhost:3000)
+server.use(cors()); // This will enable CORS for all routes by default
+
+// Create MySQL connection
 const db = mysql.createConnection({
   host: process.env.MYSQL_HOST,
   database: process.env.MYSQL_DATABASE,
@@ -13,6 +20,7 @@ const db = mysql.createConnection({
   password: process.env.MYSQL_PASSWORD,
 });
 
+// Connect to MySQL
 db.connect((err) => {
   if (err) {
     console.error('Error connecting to the database:', err);
@@ -21,27 +29,14 @@ db.connect((err) => {
   console.log('Connected to the MySQL database');
 });
 
-// Middleware to parse JSON data
-app.use(express.json());
+// Middleware to parse JSON data in requests
+server.use(express.json());
 
-// Example route: Get all clubs from the database
-app.get('/ClubFinder', (req, res) => {
-  db.query('SELECT * FROM ClubFinder.Club', (err, results) => {
-    if (err) {
-      res.status(500).send('Error querying the database');
-      return;
-    }
-
-    // Access the first club from the results
-    const firstClub = results;
-    console.log('First Club:', firstClub);
-
-    // Send the results as a JSON response
-    res.json(results);
-  });
-});
+// Use the app.js routes and middleware
+server.use(app);
 
 // Start the Express server
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
