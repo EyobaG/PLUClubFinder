@@ -9,6 +9,7 @@ import TitleBar from "./components/TitleBar";
 import Footer from './components/Footer';
 
 function App() {
+
   return (
     <Router>
       <TitleBar />
@@ -16,42 +17,27 @@ function App() {
         {/* Navigation Bar */}
         <nav className="navbar">
           <ul className="navbar-links">
-            <li>
-              <Link to="/" className="navbar-item">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/clubs" className="navbar-item">
-                Clubs
-              </Link>
-            </li>
-            <li>
-              <Link to="/quiz" className="navbar-item">
-                Quiz
-              </Link>
-            </li>
-            <li>
-              <Link to="/search" className="navbar-item">
-                Search
-              </Link>
-            </li>
+            <li><Link to="/" className="navbar-item">Home</Link></li>
+            <li><Link to="/clubs" className="navbar-item">Clubs</Link></li>
+            <li><Link to="/quiz" className="navbar-item">Quiz</Link></li>
+            <li><Link to="/search" className="navbar-item">Search</Link></li>
           </ul>
         </nav>
 
         {/* Routes */}
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/clubs" element={<ClubListPage />} />
+          <Route
+            path="/clubs"
+            element={<ClubListPage />}  // Pass fetched clubs data to ClubListPage component
+          />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/search" element={<SearchPage />} />
         </Routes>
       </div>
       <Footer />
-      
     </Router>
   );
 }
 
 export default App;
-
