@@ -15,6 +15,7 @@ server.use(cors()); // Enable CORS to allow requests from your React frontend (r
 server.use(express.json()); // Middleware to parse JSON data in requests
 
 // Set urls for fetching data from the backend
+// You can add your own queries by going to ./routes and editing/creating new js files
 server.use('/api/clubs', clubRoutes);
 server.use('/api/contacts', contactRoutes);
 server.use('/api/descriptions', descriptionRoutes);

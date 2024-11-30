@@ -41,24 +41,3 @@ function App() {
 }
 
 export default App;
-
-
-/*const [clubs, setClubs] = useState([]);  // State to hold clubs data
-
-  // Fetch club data from the server when the component mounts
-  useEffect(() => {
-    const fetchClubs = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/ClubFinder");
-        if (!response.ok) {
-          throw new Error("Error fetching clubs data");
-        }
-        const data = await response.json();
-        setClubs(data);  // Set the fetched clubs data into state
-      } catch (error) {
-        console.error("Error fetching clubs:", error);
-      }
-    };
-
-    fetchClubs(); // Fetch clubs when the component is mounted
-  }, []); // Empty dependency array to run once when the component mounts*/
