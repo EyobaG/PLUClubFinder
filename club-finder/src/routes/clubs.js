@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 });
 
 router.get('/', (req, res) => {
-  const query = 'SELECT * FROM ClubFinder.Club WHERE ';
+  const query = 'SELECT * FROM ClubFinder.Club';
   db.query(query, (err, results) => {
     if (err) {
       console.error('Error fetching users:', err);
