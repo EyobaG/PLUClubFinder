@@ -11,7 +11,6 @@ const db = mysql.createConnection({
   password: process.env.MYSQL_PASSWORD,
 });
 
-// Route for getting all users
 router.get('/', (req, res) => {
   const query = 'SELECT * FROM ClubFinder.MeetingTimes';
   db.query(query, (err, results) => {
@@ -23,6 +22,6 @@ router.get('/', (req, res) => {
   });
 });
 
-// Other user-related routes (GET, POST, PUT, DELETE) can go here
+// Other routes (GET, POST, PUT, DELETE) can go here
 
 export default router;
