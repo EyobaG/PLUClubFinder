@@ -27,10 +27,7 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route
-            path="/clubs"
-            element={<ClubListPage />}  // Pass fetched clubs data to ClubListPage component
-          />
+          <Route path="/clubs" element={<ClubListPage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/search" element={<SearchPage />} />
         </Routes>
