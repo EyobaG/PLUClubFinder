@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import MainPage from "./components/MainPage";
 import ClubListPage from "./components/ClubListPage";
 import QuizPage from "./components/QuizPage";
+import QuizQuestions from "./components/QuizQuestions";
 import SearchPage from "./components/SearchPage";
 import "./App.css";
 import TitleBar from "./components/TitleBar";
@@ -30,6 +31,7 @@ function App() {
           <Route path="/clubs" element={<ClubListPage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/question" element={<QuizQuestions />} />
         </Routes>
       </div>
       <Footer />
