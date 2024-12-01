@@ -1,4 +1,4 @@
-Everyone who uses this app will need to create a file called ".env".
+To use this app, you are required to place a new file in the src dir called ".env".
 The file must follow the structure below:
 
 MYSQL_HOST='localhost'
