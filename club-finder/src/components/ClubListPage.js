@@ -68,8 +68,14 @@ const ClubListPage = () => {
                     const contact = contacts.find(contact => contact.ClubID === club.ClubID);
                     const description = descriptions.find(description => description.ClubID === club.ClubID);
 
-                    //TODO IMPLEMENT WEBSITES && MEETING TIMES
+                    // Sorts all websites into regular websites and instagram pages
+                    const allWebsites = websites.filter(website => website.ClubID === club.ClubID);
+                    const website = allWebsites.find(website => website.Instagram.data[0] === 0);
+                    const instagram = allWebsites.find(instagram => instagram.Instagram.data[0] === 1);
 
+                    // TODO IMPLEMENT MEETING TIMES
+
+                    // Accordion Items
                     return (
                         <div key={club.ClubID} className="accordion-item">
                             <div className="accordion-header" onClick={() => toggleAccordion(index)}>
@@ -80,20 +86,36 @@ const ClubListPage = () => {
 
                                     {/* Description */}
                                     {description?.Description
-                                        && <p>{description.Description}</p>
+                                        && description.Description !== "NULL" ? (
+                                            <p>{description.Description}</p>
+                                        ) : (
+                                            <p><i>No description available right now. Try contacting the club for more information!</i></p>
+                                        )
                                     }
 
                                     {/* Club Contact */}
                                     {contact?.ClubContact
                                         && contact.ClubContact !== "NULL"
                                         && contact.ClubContact !== contact.OfficerContact 
-                                        && (<p>Club Contact: {contact.ClubContact}</p>)
+                                        && (<p><strong>Club Contact:</strong> {contact.ClubContact}</p>)
                                     }
 
                                     {/* Club President */}
                                     {contact?.OfficerContact
                                         && contact.OfficerContact !== "NULL"
-                                        && (<p>Club President: {contact.OfficerContact}</p>)
+                                        && (<p><strong>Club President:</strong> {contact.OfficerContact}</p>)
+                                    }
+                                    
+                                    {/* Website */}
+                                    {website?.URL
+                                        && website.URL !== "NULL"
+                                        && (<p><a href={website.URL} target="_blank" rel="noopener noreferrer"><strong>Club Website</strong></a></p>)
+                                    }
+
+                                    {/* Instagram */}
+                                    {instagram?.URL
+                                        && instagram.URL !== "NULL"
+                                        && (<p><a href={instagram.URL} target="_blank" rel="noopener noreferrer"><strong>Instagram</strong></a></p>)
                                     }
 
                                 </div>
