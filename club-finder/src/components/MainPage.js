@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../style/MainPage.css";
+import FeaturedClubs from './FeaturedClubs.js';
 
 const MainPage = () => {
   const sampleClubs = ["Drama Club", "Chess Club", "Coding Club", "Photography Club"];
@@ -20,15 +21,7 @@ const MainPage = () => {
         </Link>
       </div>
     
-
-      <div className="club-list-page">
-      <h1>List of Clubs</h1>
-      <ul className="club-list">
-          {sampleClubs.map((club, index) => (
-              <li key={index}>{club}</li>
-          ))}
-      </ul>
-      </div>
+      <FeaturedClubs />
     </div>
   );
 };

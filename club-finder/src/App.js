@@ -6,8 +6,8 @@ import QuizPage from "./components/QuizPage";
 import QuizQuestions from "./components/QuizQuestions";
 import SearchPage from "./components/SearchPage";
 import "./App.css";
-import TitleBar from "./components/TitleBar";
-import Footer from './components/Footer';
+import TitleBar from "./components/TitleBar.js";
+import Footer from './components/Footer.js';
 
 function App() {
 

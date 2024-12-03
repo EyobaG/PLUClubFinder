@@ -68,6 +68,12 @@ function QuizQuestion() {
         type: "radio",
         options: ["Yes","No"],
     },
+    {
+      id: 11,
+      question: "Are you interested in Outdoor Rec",
+      type: "radio",
+      options: ["Yes", "No"],
+    },
   ];
 
   // Handler for input changes
@@ -102,9 +108,25 @@ function QuizQuestion() {
   };
   // Handler for the next button
   const handleNextQuestion = () => {
+    const currentAnswer = answers[`question-${questions[currentQuestion].id}`];
     if (validateForm()) {
       setMissingFlag(false);
-      setCurrentQuestion((prev) => prev + 1);
+      if (currentQuestion === 5) {
+        console.log("flag");
+      }
+      if (currentQuestion === 0 && currentAnswer === "No") {
+        setCurrentQuestion((prev) => prev + 2); // Skip to question 3
+      } else if (currentQuestion === 5 && currentAnswer === "No") {
+        setCurrentQuestion((prev) => prev + 3);
+      } else if (currentQuestion === 5 && currentAnswer == "Yes") {
+        if (answers['question-4'] && answers[`question-4`].includes("Music")) {
+          setCurrentQuestion((prev) => prev + 1);
+        } else {
+          setCurrentQuestion((prev) => prev + 2);
+        }
+      } else {
+        setCurrentQuestion((prev) => prev + 1); // Proceed to the next question normally
+      }
     } else {
       setMissingFlag(true);
     }

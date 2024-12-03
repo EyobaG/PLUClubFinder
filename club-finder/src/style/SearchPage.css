@@ -29,3 +29,17 @@
 .search-btn:hover {
   background-color: #F57C00;
 }
+
+.checkbox-container {
+  margin-left: 450px;
+  margin-right: 450px;
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping when there are too many items */
+  gap: 15px; /* Space between the checkboxes */
+  justify-content: center;
+}
+
+.checkbox-container label {
+  display: flex;
+  align-items: center;
+}

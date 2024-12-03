@@ -1,0 +1,98 @@
+/* src/style/FeaturedClubs.css */
+.featured-clubs {
+    padding: 3rem 0;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    margin: 3rem 0;
+  }
+  
+  .featured-clubs h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .club-list {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 30px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    margin: 0 auto;
+  }
+  
+  .club-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .club-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .club-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  
+  .club-card:hover .club-img {
+    opacity: 0.8;
+  }
+  
+  .club-info {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .club-info h3 {
+    font-size: 1.8rem;
+    color: #0073e6;
+    margin-bottom: 0.5rem;
+  }
+  
+  .club-info p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+  
+  .learn-more-btn {
+    background-color: #0073e6;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+  }
+  
+  .learn-more-btn:hover {
+    background-color: #005bb5;
+  }
+  
+  /* Add responsiveness for smaller screens */
+  @media (max-width: 768px) {
+    .club-list {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .club-card {
+      width: 80%;
+    }
+  }
+  
