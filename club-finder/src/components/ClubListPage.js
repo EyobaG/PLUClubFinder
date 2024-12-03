@@ -70,7 +70,6 @@ function ClubListPage() {
     return (
         <div className="club-list-page">
             <h1>List of Clubs</h1>
-            {clubs.length > 0 ? (
                 <div className="accordion">
                     {clubs.map((club, index) => {
                         const contact = contacts.find(contact => contact.ClubID === club.ClubID);
@@ -91,9 +90,6 @@ function ClubListPage() {
                         );
                     })}
                 </div>
-            ) : (
-                <p>No clubs available</p>
-            )}
         </div>
     );
 }
