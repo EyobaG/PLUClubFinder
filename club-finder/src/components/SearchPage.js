@@ -60,11 +60,7 @@ const SearchPage = () => {
         {tags.map((tag) => (
           <div key={tag}>
             <label>
-              <input
-                type="checkbox"
-                checked={selectedTags.has(tag)}
-                onChange={() => handleCheckboxChange(tag)}
-              />
+              <input type="checkbox" checked={selectedTags.has(tag)} onChange={() => handleCheckboxChange(tag)} />
               {tag}
             </label>
           </div>
