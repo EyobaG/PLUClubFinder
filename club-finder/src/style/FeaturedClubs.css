@@ -42,7 +42,7 @@
   
   .club-img {
     width: 100%;
-    height: 200px;
+    height: 160px;
     object-fit: cover;
     transition: opacity 0.3s ease;
   }
