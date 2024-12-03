@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import MainPage from "./components/MainPage";
-import ClubListPage from "./components/ClubListPage";
-import QuizPage from "./components/QuizPage";
-import QuizQuestions from "./components/QuizQuestions";
-import SearchPage from "./components/SearchPage";
+import MainPage from "./components/MainPage.js";
+import ClubListPage from "./components/ClubListPage.js";
+import QuizPage from "./components/QuizPage.js";
+import QuizQuestions from "./components/QuizQuestions.js";
+import SearchPage from "./components/SearchPage.js";
 import "./App.css";
 import TitleBar from "./components/TitleBar.js";
 import Footer from './components/Footer.js';
