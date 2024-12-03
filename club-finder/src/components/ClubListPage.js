@@ -3,6 +3,8 @@ import '../style/ClubListPage.css';
 import '../style/Accordion.css';
 
 function ClubListPage() {
+
+    console.log("start");
     const [clubs, setClubs] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [descriptions, setDescriptions] = useState([]);
@@ -15,7 +17,6 @@ function ClubListPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-
                 // Clubs
                 const clubsResponse = await fetch("http://localhost:5000/api/clubs");
                 if (!clubsResponse.ok) {
@@ -41,7 +42,7 @@ function ClubListPage() {
                 setDescriptions(descriptionsData);
 
                 // Websites
-                const websitesResponse = await fetch("http://localhost:5000/api/websites"); // Assuming this is the API endpoint for websites
+                const websitesResponse = await fetch("http://localhost:5000/api/websites"); // Assuming this endpoint
                 if (!websitesResponse.ok) {
                     throw new Error("Error fetching websites data");
                 }
@@ -52,11 +53,11 @@ function ClubListPage() {
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError("Failed to fetch data");
-                setLoading(false);  // Stop loading even if there's an error
+                setLoading(false);
             }
         };
 
-        fetchData();  // Trigger data fetching when component mounts
+        fetchData();
     }, []); // Empty dependency array to run once when the component mounts
 
     const toggleAccordion = (index) => {
@@ -82,9 +83,8 @@ function ClubListPage() {
                 {clubs.map((club, index) => {
                     const contact = contacts.find(contact => contact.ClubID === club.ClubID);
                     const description = descriptions.find(description => description.ClubID === club.ClubID);
-                    const clubWebsites = websites.filter(website => website.ClubID === club.ClubID); // Filter websites for the current club
-                    const website = clubWebsites.find(site => site.URL && !site.instagram); // Assuming website URLs contain "google.com"
-                    const instagram = clubWebsites.find(site => site.URL && site.instagram); // Assuming Instagram URLs contain "instagram.com"
+
+                    //TODO IMPLEMENT WEBSITES && MEETING TIMES
 
                     return (
                         <div key={club.ClubID} className="accordion-item">
@@ -95,37 +95,18 @@ function ClubListPage() {
                                 <div className="accordion-content">
 
                                     {/* Description */}
-                                    {description?.Description && description.Description !== "NULL" && (
-                                        <p>{description.Description}</p>
-                                    )}
+                                    {description?.Description && <p>{description.Description}</p>}
 
-                                    {/* Club Contact, if exists */}
+                                    {/* Club Contact */}
                                     {contact?.ClubContact && contact.ClubContact !== "NULL" && (
                                         <p>Club Contact: {contact.ClubContact}</p>
                                     )}
 
-                                    {/* Club President, if exists */}
+                                    {/* Club President */}
                                     {contact?.OfficerContact && contact.OfficerContact !== "NULL" && (
                                         <p>Club President: {contact.OfficerContact}</p>
                                     )}
-                                    
-                                    {/* Club Website, if exists */}
-                                    {website && website.URL !== "NULL" && (
-                                        <p>Club Website:
-                                            <a href={website.URL} target="_blank" rel="noopener noreferrer">
-                                                 {website.URL}
-                                            </a>
-                                        </p>
-                                    )}
 
-                                    {/* Club Instagram, if exists */}
-                                    {instagram && instagram.URL !== "NULL" && (
-                                        <p>Instagram:
-                                            <a href={instagram.URL} target="_blank" rel="noopener noreferrer">
-                                                 {instagram.URL}
-                                            </a>
-                                        </p>
-                                    )}
                                 </div>
                             )}
                         </div>
