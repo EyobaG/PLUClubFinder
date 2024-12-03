@@ -32,7 +32,8 @@ const ClubListPage = () => {
             fetchData('http://localhost:5000/api/clubs', setClubs, 'Error fetching clubs data'),
             fetchData('http://localhost:5000/api/contacts', setContacts, 'Error fetching contacts data'),
             fetchData('http://localhost:5000/api/descriptions', setDescriptions, 'Error fetching descriptions data'),
-            fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data')
+            fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data'),
+            fetchData('http://localhost:5000/api/meetingTimes', setWebsites, 'Error fetching meeting time data')
         ]);
         setLoading(false);
       } catch (error) {
@@ -89,7 +90,7 @@ const ClubListPage = () => {
                                         && description.Description !== "NULL" ? (
                                             <p>{description.Description}</p>
                                         ) : (
-                                            <p><i>No description available right now. Try contacting the club for more information!</i></p>
+                                            <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
                                         )
                                     }
 
