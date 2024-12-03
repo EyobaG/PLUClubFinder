@@ -21,6 +21,7 @@ const ClubListPage = () => {
   const [contacts, setContacts] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
   const [websites, setWebsites] = useState([]);
+  const [meeetingTimes, setMeetingTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -33,7 +34,7 @@ const ClubListPage = () => {
             fetchData('http://localhost:5000/api/contacts', setContacts, 'Error fetching contacts data'),
             fetchData('http://localhost:5000/api/descriptions', setDescriptions, 'Error fetching descriptions data'),
             fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data'),
-            fetchData('http://localhost:5000/api/meetingTimes', setWebsites, 'Error fetching meeting time data')
+            fetchData('http://localhost:5000/api/meeting-times', setMeetingTimes, 'Error fetching meeting time data')
         ]);
         setLoading(false);
       } catch (error) {
