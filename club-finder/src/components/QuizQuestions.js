@@ -4,6 +4,7 @@ function QuizQuestion() {
   // State to track the current question and answers
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [missingFlag, setMissingFlag] = useState(false);
 
   // Quiz questions with varying input types
   const questions = [
@@ -88,9 +89,25 @@ function QuizQuestion() {
     });
   };
 
+
+  const validateForm = () => {
+    const question = questions[currentQuestion];
+    const answer = answers[`question-${question.id}`];
+    if (question.type === "radio") {
+      if (!answer) {
+        return false;
+      }
+    }
+    return true;
+  };
   // Handler for the next button
   const handleNextQuestion = () => {
-    setCurrentQuestion((prev) => prev + 1);
+    if (validateForm()) {
+      setMissingFlag(false);
+      setCurrentQuestion((prev) => prev + 1);
+    } else {
+      setMissingFlag(true);
+    }
   };
 
   // Render the current question
@@ -141,6 +158,7 @@ function QuizQuestion() {
           {renderQuestion()}
           <br />
           <button onClick={handleNextQuestion}>Next</button>
+          {missingFlag && <h3 style={{ color: "red" }}>Please provide an answer</h3>}
         </div>
       ) : (
         <div>
