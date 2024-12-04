@@ -9,7 +9,8 @@ import meetingTimeRoute from "./routes/meetingTimes.js";
 import tagRoute from "./routes/tags.js";
 import websiteRoute from "./routes/websites.js";
 import quizAnswersRoute from "./routes/quizAnswers.js";
-import tagSearchRoute from "./routes/quizAnswers.js";
+//import tagSearchRoute from "./routes/quizAnswers.js";
+import tagFilterRoutes from "./routes/tagsFilter.js";
 dotenv.config();
 
 const server = express();
@@ -22,11 +23,11 @@ server.use('/api/clubs', clubRoute);
 server.use('/api/contacts', contactRoute);
 server.use('/api/descriptions', descriptionRoute);
 server.use('/api/meeting-times', meetingTimeRoute);
-server.use('/api/tags', tagRoute);
+//server.use('/api/tags', tagRoute);
 server.use('/api/websites', websiteRoute);
 server.use('/api/quiz-answers', quizAnswersRoute);
-server.use('/api/tag-search', tagSearchRoute);
-
+//server.use('/api/tag-search', tagSearchRoute);
+server.use('/api/tags-filter', tagFilterRoutes);
 // Start the Express server
 const PORT = 5000;
 server.listen(PORT, () => {
