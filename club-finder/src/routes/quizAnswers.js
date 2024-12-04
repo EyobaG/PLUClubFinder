@@ -23,11 +23,13 @@ router.post('/', (req, res) => {
    * clubs if choosing NonSerious*/
   if (answers['question-1'] == 'Yes') {
     tags.push("Athletic")
+
     if (answers['question-2'] == 'Competitive') {
       tags.push("AthleticSerious");
     } else {
       tags.push("AthleticNonSerious");
     }
+    
   }
 
   if (answers['question-3'] == 'Yes') {
@@ -35,7 +37,7 @@ router.post('/', (req, res) => {
   }
 
   if (Array.isArray(answers['question-4'])) {
-    const question4 = answers['question-4']; // Save the array
+    const question4 = answers['question-4'];
     if (
       question4.includes("Mathematics") ||
       question4.includes("English") ||
@@ -44,8 +46,10 @@ router.post('/', (req, res) => {
       question4.includes("Social Sciences")
     ) {
       tags.push("STEM");
-    } else if (question4.includes("Health")) {
+    } if (question4.includes("Health")) {
       tags.push("Health");
+    } if (question4.includes("Music")) {
+      tags.push("Music");
     }
   } else if (answers['question-4']) {
     console.log("Question-4 exists but is not an array");
@@ -59,15 +63,15 @@ router.post('/', (req, res) => {
 
   if (answers['question-6'] == 'Yes') {
     tags.push("Creative Interest");
-    // Q7 has a weird route
+
+    if (answers['question-7'] == 'Yes') {
+      tags.push("Music");
+    }
+  
     if (answers['question-8'] == 'Yes') {
       tags.push("Dance");
       tags.push("Theatre");
     }
-  }
-
-  if (answers['question-7'] == 'Yes' || answers['question-4'].includes("Music")) {
-    tags.push("Music");
   }
 
   if (answers['question-9'] == 'Yes') {
@@ -115,13 +119,22 @@ router.post('/', (req, res) => {
       CONCAT(con.OfficerFirstName, ' ', con.OfficerLastName) AS ClubPresident, 
       con.OfficerContact AS PresidentEmail, 
       w.URL AS Website
-    FROM Tags t
-    JOIN Club c ON t.ClubID = c.ClubID
-    LEFT JOIN Description d ON c.ClubID = d.ClubID
-    LEFT JOIN Contacts con ON c.ClubID = con.ClubID
-    LEFT JOIN Websites w ON c.ClubID = w.ClubID
-    WHERE t.Tag IN (${tagsSeparated})`
-    + appendsSeparated;
+  FROM Tags t
+  JOIN Club c ON t.ClubID = c.ClubID
+  LEFT JOIN Description d ON c.ClubID = d.ClubID
+  LEFT JOIN Contacts con ON c.ClubID = con.ClubID
+  LEFT JOIN Websites w ON c.ClubID = w.ClubID
+  WHERE t.Tag IN (${tagsSeparated}) 
+    AND NOT EXISTS (
+      SELECT 1
+      FROM Tags t2
+      WHERE t2.ClubID = c.ClubID
+      AND (
+        (t2.Tag = 'AthleticSerious' AND EXISTS (SELECT 1 FROM Tags t3 WHERE t3.ClubID = c.ClubID AND t3.Tag = 'AthleticNonSerious'))
+        OR 
+        (t2.Tag = 'AthleticNonSerious' AND EXISTS (SELECT 1 FROM Tags t3 WHERE t3.ClubID = c.ClubID AND t3.Tag = 'AthleticSerious'))
+      )
+    )` + appendsSeparated;
   }
 
   db.query(query, (err, results) => {
