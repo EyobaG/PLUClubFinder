@@ -91,21 +91,69 @@ const FilteredList = () => {
   }
 
   return (
-    <div className="club-list-page">
-      <h1>List of Clubs</h1>
+    <div className="filtered-list-page">
+      <h1>Your Results!</h1>
       <div className="accordion">
         {clubs.map((club, index) => (
-          <div key={club.ClubID} className="accordion-item">
+          <div key={`${club.ClubID}-${index}`} className="accordion-item">
             <div className="accordion-header" onClick={() => toggleAccordion(index)}>
-              {club.ClubName}
+              {club.ClubName}, {club.ClubID}
             </div>
             {activeIndex === index && (
               <div className="accordion-content">
+
+                {/* Description */}
                 {club.Description && club.Description !== 'NULL' ? (
                   <p>{club.Description}</p>
                 ) : (
                   <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
                 )}
+
+                {/* Club Contact */}
+                {club?.ClubContact
+                    && club.ClubContact !== "NULL"
+                    && club.ClubContact !== club.OfficerContact 
+                    && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${club.ClubContact}`}><i>{club.ClubContact}</i></a></p>)
+                  }
+
+                  {/* Club President */}
+                  {club?.PresidentEmail
+                    && club.PresidentEmail !== "NULL"
+                    && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${club.PresidentEmail}`}><i>{club.PresidentEmail}</i></a></p>)
+                  }
+
+                  {/* Websites 
+                  { (website?.URL || instagram?.URL) && (
+                      <p><strong><u>Websites:</u> </strong>
+                        {instagram?.URL && <a href={instagram.URL} target="_blank" rel="noopener noreferrer"><i>Instagram</i></a>}
+                        {website?.URL && instagram?.URL && ', '}
+                        {website?.URL && <a href={website.URL} target="_blank" rel="noopener noreferrer"><i>Club Site</i></a>}
+                        
+                      </p>
+                  )}*/}
+                                
+                  <div className="club-list-page-left">
+
+                    {/* Meeting Times 
+                    {allMeetingTimes.length > 0 ? (
+                      <div>
+                        <strong><u>Meeting Times (subject to change)</u></strong>
+                        <ul>
+                          {allMeetingTimes.map((time, idx) => (
+                            <li key={idx}>
+                              <strong>{time.DayOfWeek}</strong> - {convertTime(time.StartTime)} to {convertTime(time.EndTime)} @ {time.Location}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      ) : (
+                        <div className="club-list-page">
+                          <i>Meeting times are not currently available for this club.</i>
+                        </div>
+                      )
+                    }*/}
+
+                  </div> {/* club-list-page-left */}
               </div>
             )}
           </div>

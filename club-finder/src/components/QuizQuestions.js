@@ -19,9 +19,9 @@ function QuizQuestion() {
     },
     {
         id: 2,
-        question: "Are you competitive?",
+        question: "Do you prefer competitive or recreational sports?",
         type: "radio",
-        options: ["Yes", "No"],
+        options: ["Competitive", "Recreational"],
     },
     {
         id: 3,
@@ -124,9 +124,9 @@ function QuizQuestion() {
         setCurrentQuestion((prev) => prev + 3);
       } else if (currentQuestion === 5 && currentAnswer === "Yes") {
         if (answers['question-4'] && answers[`question-4`].includes("Music")) {
-          setCurrentQuestion((prev) => prev + 1);
-        } else {
           setCurrentQuestion((prev) => prev + 2);
+        } else {
+          setCurrentQuestion((prev) => prev + 1);
         }
       } else if (currentQuestion + 1 === questions.length) {
 
@@ -201,7 +201,7 @@ function QuizQuestion() {
       <h1>Quiz!!</h1>
       {currentQuestion < questions.length ? (
         <div>
-          <p>{questions[currentQuestion].id}. {currentQuestion}, {questions[currentQuestion].question}</p>
+          <p>{currentQuestion}, {questions[currentQuestion].question}</p>
           {renderQuestion()}
           <br />
           <button className="button next-button" onClick={handleNextQuestion}>Next</button>

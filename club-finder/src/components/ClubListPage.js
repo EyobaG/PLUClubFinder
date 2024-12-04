@@ -97,7 +97,7 @@ const ClubListPage = () => {
 
   return (
     <div className="club-list-page">
-      <h1>List of Clubs</h1>
+      <h1>All Clubs</h1>
       <div className="accordion">
         {clubs.map((club, index) => {
           const contact = contacts.find(contact => contact.ClubID === club.ClubID);
