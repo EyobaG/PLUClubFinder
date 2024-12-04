@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../style/QuizQuestions.css';
 
 function QuizQuestion() {
   // State to track the current question and answers
@@ -118,7 +119,7 @@ function QuizQuestion() {
         setCurrentQuestion((prev) => prev + 2); // Skip to question 3
       } else if (currentQuestion === 5 && currentAnswer === "No") {
         setCurrentQuestion((prev) => prev + 3);
-      } else if (currentQuestion === 5 && currentAnswer == "Yes") {
+      } else if (currentQuestion === 5 && currentAnswer === "Yes") {
         if (answers['question-4'] && answers[`question-4`].includes("Music")) {
           setCurrentQuestion((prev) => prev + 1);
         } else {
@@ -172,7 +173,7 @@ function QuizQuestion() {
   };
 
   return (
-    <div>
+    <div className="questions-page">
       <h1>Quiz!!</h1>
       {currentQuestion < questions.length ? (
         <div>

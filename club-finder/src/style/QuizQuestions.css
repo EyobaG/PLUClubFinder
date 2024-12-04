@@ -1,4 +1,57 @@
-.quiz-page {
+.questions-page {
     text-align: center;
     margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.questions-page h1 {
+    font-size: 50px;
+
+}
+
+.questions-page p {
+    font-size: 25px;
+}
+
+.questions-page h3 {
+    font-size: 30px;
+}
+
+.questions-page input[type="radio"] {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid;
+    border-radius: 50%;
+    margin-right: 8px;
+    transition: all 0.3s ease;
+    margin-left: 50px;
+}
+
+.questions-page input[type="checkbox"] {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid;
+    border-radius: 4px;
+    margin-right: 8px;
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.3s ease;
+    margin-left: 30px;
+}
+
+.questions-page label {
+    font-size: 20px;
+    margin-right: 50px;
+}
+
+.questions-page button{
+    font-size: 20px;
+    box-sizing: border-box;
+    width: 250px;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid;
+    border-radius: 4px;
 }
