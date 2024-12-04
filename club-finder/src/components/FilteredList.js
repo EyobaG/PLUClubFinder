@@ -1,6 +1,6 @@
 /* TODO:
  * 
- * - Fix duplicate clubs appearing b/c of them having multiple tags
+ * - Fix duplicate clubs appearing
  * - Implement websites and meeting times in the accordion
  * - Fix logic/db pertaining to athletic and athleticserious/nonserious tags
  * */
@@ -11,34 +11,20 @@ import '../style/ClubListPage.css';
 import '../style/Accordion.css';
 
 // Function to fetch filtered data
-const fetchData = async (url, setState, errorMessage, quizAnswers) => {
+const fetchData = async (url, setState, errorMessage) => {
   try {
-    const response = await fetch(url, {
-      method: 'POST', // Send a POST request
-      headers: {
-        'Content-Type': 'application/json', // Set the content type to JSON
-      },
-      body: JSON.stringify(quizAnswers), // Send the quiz answers in the request body
-    });
-
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(errorMessage);
     }
-
-    // Read the response as text first (for debugging)
-    const responseText = await response.text();
-    console.log('Response Text:', responseText);
-
-    // Try parsing the response as JSON if it's valid
-    const data = JSON.parse(responseText); // Manually parse the JSON
-
-    //const data = await response.json();
-    setState(data); // Update state with the received data
+    const data = await response.json();
+    setState(data);
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
+
 
 // Main FilteredList Component
 const FilteredList = () => {
@@ -47,13 +33,16 @@ const FilteredList = () => {
 
   const [activeIndex, setActiveIndex] = useState(null);
   const [clubs, setClubs] = useState([]);
+  const [websites, setWebsites] = useState([]);
+  const [meetingTimes, setMeetingTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch filtered club data based on quiz answers
   useEffect(() => {
-    const fetchData = async () => {
+    const searchAPI = async () => {
       try {
+        // Fetch club data
         const response = await fetch('http://localhost:5000/api/quiz-answers', {
           method: 'POST',
           headers: {
@@ -68,6 +57,14 @@ const FilteredList = () => {
 
         const data = await response.json();
         setClubs(data);
+
+        // Fetch websites and meeting times concurrently
+        const websitesPromise = fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data');
+        const meetingTimesPromise = fetchData('http://localhost:5000/api/meeting-times', setMeetingTimes, 'Error fetching meeting time data');
+
+        // Wait for both fetches to complete
+        await Promise.all([websitesPromise, meetingTimesPromise]);
+
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -76,7 +73,7 @@ const FilteredList = () => {
     };
 
     if (answers) {
-      fetchData(); // Only fetch if `answers` are available
+      searchAPI(); // Only fetch if `answers` are available
     }
   }, [answers]);
 
@@ -96,39 +93,75 @@ const FilteredList = () => {
     return <div>{error.message}</div>;
   }
 
+  // Converts a time from military time to AMPM time
+  const convertTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+
+    const isAM = hours < 12;
+    const newHour = hours % 12 || 12;
+    const ampm = isAM ? 'AM' : 'PM';
+
+    const minutesFormatted = minutes.toString().padStart(2, '0');
+
+    return `${newHour}:${minutesFormatted} ${ampm}`;
+  };
+
+  // Orders an array based on the day of the week (starting with Sunday)
+  const sortMeetingTimes = (meetingTimes) => {
+    const dayOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  
+    return meetingTimes.sort((a, b) => {
+      const dayIndexA = dayOrder.indexOf(a.DayOfWeek);
+      const dayIndexB = dayOrder.indexOf(b.DayOfWeek);
+  
+      return dayIndexA - dayIndexB;
+    });
+  };
+
+  const sortedMeetingTimes = sortMeetingTimes(meetingTimes);
+
   return (
     <div className="filtered-list-page">
       <h1>Your Results!</h1>
       <div className="accordion">
-        {clubs.map((club, index) => (
-          <div key={`${club.ClubID}-${index}`} className="accordion-item">
-            <div className="accordion-header" onClick={() => toggleAccordion(index)}>
-              {club.ClubName}, {club.ClubID}
-            </div>
-            {activeIndex === index && (
-              <div className="accordion-content">
+        {clubs.map((club, index) => {
+          // Filter and find websites for each club
+          const allWebsites = websites.filter(website => website.ClubID === club.ClubID);
+          const website = allWebsites.find(website => website.Instagram.data[0] === 0);
+          const instagram = allWebsites.find(instagram => instagram.Instagram.data[0] === 1);
 
-                {/* Description */}
-                {club.Description && club.Description !== 'NULL' ? (
-                  <p>{club.Description}</p>
-                ) : (
-                  <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
-                )}
-
-                {/* Club Contact */}
-                {club?.ClubContact
+          // Filter the meeting times for the current club
+          const allMeetingTimes = sortedMeetingTimes.filter(time => time.ClubID === club.ClubID);
+  
+          return (
+            <div key={`${club.ClubID}-${index}`} className="accordion-item">
+              <div className="accordion-header" onClick={() => toggleAccordion(index)}>
+                {club.ClubName}, {club.ClubID}
+              </div>
+              {activeIndex === index && (
+                <div className="accordion-content">
+  
+                  {/* Description */}
+                  {club.Description && club.Description !== 'NULL' ? (
+                    <p>{club.Description}</p>
+                  ) : (
+                    <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
+                  )}
+  
+                  {/* Club Contact */}
+                  {club?.ClubContact
                     && club.ClubContact !== "NULL"
                     && club.ClubContact !== club.OfficerContact 
                     && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${club.ClubContact}`}><i>{club.ClubContact}</i></a></p>)
                   }
-
+  
                   {/* Club President */}
                   {club?.PresidentEmail
                     && club.PresidentEmail !== "NULL"
                     && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${club.PresidentEmail}`}><i>{club.PresidentEmail}</i></a></p>)
                   }
-
-                  {/* Websites 
+  
+                  {/* Websites */}
                   { (website?.URL || instagram?.URL) && (
                       <p><strong><u>Websites:</u> </strong>
                         {instagram?.URL && <a href={instagram.URL} target="_blank" rel="noopener noreferrer"><i>Instagram</i></a>}
@@ -136,11 +169,11 @@ const FilteredList = () => {
                         {website?.URL && <a href={website.URL} target="_blank" rel="noopener noreferrer"><i>Club Site</i></a>}
                         
                       </p>
-                  )}*/}
-                                
+                  )}
+  
                   <div className="club-list-page-left">
-
-                    {/* Meeting Times 
+  
+                    {/* Meeting Times */}
                     {allMeetingTimes.length > 0 ? (
                       <div>
                         <strong><u>Meeting Times (subject to change)</u></strong>
@@ -157,13 +190,14 @@ const FilteredList = () => {
                           <i>Meeting times are not currently available for this club.</i>
                         </div>
                       )
-                    }*/}
-
+                    }
+                    
                   </div> {/* club-list-page-left */}
-              </div>
-            )}
-          </div>
-        ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

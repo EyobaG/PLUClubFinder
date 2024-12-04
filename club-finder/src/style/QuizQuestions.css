@@ -57,7 +57,7 @@
 }
 
 .next-button {
-    background-color: #000000; /* Green */
+    background-color: #2196F3; /* Green */
     border: none;
     color: white;
     padding: 16px 32px;
@@ -71,6 +71,6 @@
   }
 
 .next-button:hover {
-    background-color: #494747;
+    background-color: #7dbef3;
     color: white;
 }
