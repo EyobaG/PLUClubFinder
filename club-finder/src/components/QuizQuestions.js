@@ -13,7 +13,7 @@ function QuizQuestion() {
   const questions = [
     {
         id: 1,
-        question: "Are you interested in athletics",
+        question: "Are you interested in athletics?",
         type: "radio",
         options: ["Yes", "No"],
     },
@@ -31,13 +31,13 @@ function QuizQuestion() {
     },
     {
         id: 4,
-        question: "Select all of the school subjects that you like",
+        question: "Select all of the school subjects that you like:",
         type: "checkbox",
         options: ["Mathematics", "English", "History", "Lab Sciences", "Social Sciences", "Music", "Health"],
     },
     {
         id: 5,
-        question: "Do you like getting involved in your community",
+        question: "Do you like getting involved in your community?",
         type: "radio",
         options: ["Yes","No"],
     },
@@ -49,7 +49,7 @@ function QuizQuestion() {
     },
     {
         id: 7,
-        question: "Are you interested in music",
+        question: "Are you interested in music?",
         type: "radio",
         options: ["Yes", "No"],
     },
@@ -73,7 +73,7 @@ function QuizQuestion() {
     },
     {
       id: 11,
-      question: "Are you interested in Outdoor Rec",
+      question: "Are you interested in Outdoor Rec?",
       type: "radio",
       options: ["Yes", "No"],
     },
@@ -109,8 +109,9 @@ function QuizQuestion() {
     }
     return true;
   };
+
   // Handler for the next button
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     const currentAnswer = answers[`question-${questions[currentQuestion].id}`];
     if (validateForm()) {
       setMissingFlag(false);
@@ -128,7 +129,26 @@ function QuizQuestion() {
           setCurrentQuestion((prev) => prev + 2);
         }
       } else if (currentQuestion + 1 === questions.length) {
-        navigate("/filter", { state: { answers } });
+
+        /*try {
+          const response = await fetch("http://localhost:5000/api/quiz-answers", {
+            method: "POST", 
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(answers),
+          });
+
+          if(!response.ok) {
+            throw new Error("Network response was not ok");
+          }*/
+
+          navigate("/filter", { state: { answers } });
+
+        /*} catch (error) {
+          console.error("Error submitting your answers");
+        }*/
+
       } else {
         setCurrentQuestion((prev) => prev + 1); // Proceed to the next question normally
       }
@@ -181,10 +201,10 @@ function QuizQuestion() {
       <h1>Quiz!!</h1>
       {currentQuestion < questions.length ? (
         <div>
-          <p>{questions[currentQuestion].question}</p>
+          <p>{questions[currentQuestion].id}. {currentQuestion}, {questions[currentQuestion].question}</p>
           {renderQuestion()}
           <br />
-          <button onClick={handleNextQuestion}>Next</button>
+          <button className="button next-button" onClick={handleNextQuestion}>Next</button>
           {missingFlag && <h3 style={{ color: "red" }}>Please provide an answer</h3>}
         </div>
       ) : (

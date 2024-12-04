@@ -8,6 +8,7 @@ import descriptionRoutes from "./routes/descriptions.js";
 import meetingTimeRoutes from "./routes/meetingTimes.js";
 import tagRoutes from "./routes/tags.js";
 import websiteRoutes from "./routes/websites.js";
+import quizAnswersRoutes from "./routes/quizAnswers.js";
 dotenv.config();
 
 const server = express();
@@ -22,7 +23,7 @@ server.use('/api/descriptions', descriptionRoutes);
 server.use('/api/meeting-times', meetingTimeRoutes);
 server.use('/api/tags', tagRoutes);
 server.use('/api/websites', websiteRoutes);
-
+server.use('/api/quiz-answers', quizAnswersRoutes);
 
 // Start the Express server
 const PORT = 5000;
