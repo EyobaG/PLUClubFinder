@@ -201,7 +201,7 @@ function QuizQuestion() {
       <h1>Quiz!!</h1>
       {currentQuestion < questions.length ? (
         <div>
-          <p>{currentQuestion}, {questions[currentQuestion].question}</p>
+          <p>{questions[currentQuestion].question}</p>
           {renderQuestion()}
           <br />
           <button className="button next-button" onClick={handleNextQuestion}>Next</button>
