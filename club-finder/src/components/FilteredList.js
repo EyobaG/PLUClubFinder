@@ -151,7 +151,7 @@ const FilteredList = () => {
                   {/* Club Contact */}
                   {club?.ClubContact
                     && club.ClubContact !== "NULL"
-                    && club.ClubContact !== club.OfficerContact 
+                    && club.ClubContact !== club.PresidentEmail 
                     && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${club.ClubContact}`}><i>{club.ClubContact}</i></a></p>)
                   }
   
