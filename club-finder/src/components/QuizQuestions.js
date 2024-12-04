@@ -189,9 +189,7 @@ function QuizQuestion() {
         </div>
       ) : (
         <div>
-          <h2>Quiz Complete!</h2>
-          <p>Your Answers:</p>
-          <pre>{JSON.stringify(answers, null, 2)}</pre>
+          <h2>Redirect failed</h2>
         </div>
       )}
     </div>
