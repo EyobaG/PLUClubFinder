@@ -99,13 +99,13 @@ const ClubListPage = () => {
                                     {contact?.ClubContact
                                         && contact.ClubContact !== "NULL"
                                         && contact.ClubContact !== contact.OfficerContact 
-                                        && (<p><strong>Club Contact:</strong> {contact.ClubContact}</p>)
+                                        && (<p><strong>Club Contact: </strong><a href={`mailto:${contact.ClubContact}`}>{contact.ClubContact}</a></p>)
                                     }
 
                                     {/* Club President */}
                                     {contact?.OfficerContact
                                         && contact.OfficerContact !== "NULL"
-                                        && (<p><strong>Club President:</strong> {contact.OfficerContact}</p>)
+                                        && (<p><strong>Club President: </strong><a href={`mailto:${contact.OfficerContact}`}>{contact.OfficerContact}</a></p>)
                                     }
                                     
                                     {/* Website */}
