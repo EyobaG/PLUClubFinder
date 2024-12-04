@@ -21,7 +21,7 @@ const ClubListPage = () => {
   const [contacts, setContacts] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
   const [websites, setWebsites] = useState([]);
-  const [meeetingTimes, setMeetingTimes] = useState([]);
+  const [meetingTimes, setMeetingTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -30,11 +30,11 @@ const ClubListPage = () => {
     const searchAPI = async () => {
       try {
         await Promise.all([
-            fetchData('http://localhost:5000/api/clubs', setClubs, 'Error fetching clubs data'),
-            fetchData('http://localhost:5000/api/contacts', setContacts, 'Error fetching contacts data'),
-            fetchData('http://localhost:5000/api/descriptions', setDescriptions, 'Error fetching descriptions data'),
-            fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data'),
-            fetchData('http://localhost:5000/api/meeting-times', setMeetingTimes, 'Error fetching meeting time data')
+          fetchData('http://localhost:5000/api/clubs', setClubs, 'Error fetching clubs data'),
+          fetchData('http://localhost:5000/api/contacts', setContacts, 'Error fetching contacts data'),
+          fetchData('http://localhost:5000/api/descriptions', setDescriptions, 'Error fetching descriptions data'),
+          fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data'),
+          fetchData('http://localhost:5000/api/meeting-times', setMeetingTimes, 'Error fetching meeting time data')
         ]);
         setLoading(false);
       } catch (error) {
@@ -48,9 +48,9 @@ const ClubListPage = () => {
 
   const toggleAccordion = (index) => {
     if (activeIndex === index) {
-        setActiveIndex(null);
+      setActiveIndex(null);
     } else {
-        setActiveIndex(index);
+      setActiveIndex(index);
     }
   };
 
@@ -62,72 +62,107 @@ const ClubListPage = () => {
     return <div>{error}</div>;
   }
 
+  const sortMeetingTimes = (meetingTimes) => {
+    const dayOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  
+    return meetingTimes.sort((a, b) => {
+      const dayIndexA = dayOrder.indexOf(a.DayOfWeek);
+      const dayIndexB = dayOrder.indexOf(b.DayOfWeek);
+  
+      // Compare based on the day of the week order
+      return dayIndexA - dayIndexB;
+    });
+  };
+
+  const sortedMeetingTimes = sortMeetingTimes(meetingTimes);
+
   return (
-        <div className="club-list-page">
-            <h1>List of Clubs</h1>
-            <div className="accordion">
-                {clubs.map((club, index) => {
-                    const contact = contacts.find(contact => contact.ClubID === club.ClubID);
-                    const description = descriptions.find(description => description.ClubID === club.ClubID);
+    <div className="club-list-page">
+      <h1>List of Clubs</h1>
+      <div className="accordion">
+        {clubs.map((club, index) => {
+          const contact = contacts.find(contact => contact.ClubID === club.ClubID);
+          const description = descriptions.find(description => description.ClubID === club.ClubID);
 
-                    // Sorts all websites into regular websites and instagram pages
-                    const allWebsites = websites.filter(website => website.ClubID === club.ClubID);
-                    const website = allWebsites.find(website => website.Instagram.data[0] === 0);
-                    const instagram = allWebsites.find(instagram => instagram.Instagram.data[0] === 1);
+          // Sorts all websites into regular websites and instagram pages
+          const allWebsites = websites.filter(website => website.ClubID === club.ClubID);
+          const website = allWebsites.find(website => website.Instagram.data[0] === 0);
+          const instagram = allWebsites.find(instagram => instagram.Instagram.data[0] === 1);
 
-                    // TODO IMPLEMENT MEETING TIMES
+          // Filter and display the meeting times for the current club
+          const allMeetingTimes = sortedMeetingTimes.filter(time => time.ClubID === club.ClubID);
 
-                    // Accordion Items
-                    return (
-                        <div key={club.ClubID} className="accordion-item">
-                            <div className="accordion-header" onClick={() => toggleAccordion(index)}>
-                                {club.ClubName}
-                            </div>
-                            {activeIndex === index && (
-                                <div className="accordion-content">
+          // Accordion Items
+          return (
+            <div key={club.ClubID} className="accordion-item">
+              <div className="accordion-header" onClick={() => toggleAccordion(index)}>
+                {club.ClubName}
+                </div>
+                {activeIndex === index && (
+                  <div className="accordion-content">
 
-                                    {/* Description */}
-                                    {description?.Description
-                                        && description.Description !== "NULL" ? (
-                                            <p>{description.Description}</p>
-                                        ) : (
-                                            <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
-                                        )
-                                    }
+                    {/* Description */}
+                    {description?.Description
+                      && description.Description !== "NULL" ? (
+                      <p>{description.Description}</p>
+                      ) : (
+                        <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
+                      )
+                    }
 
-                                    {/* Club Contact */}
-                                    {contact?.ClubContact
-                                        && contact.ClubContact !== "NULL"
-                                        && contact.ClubContact !== contact.OfficerContact 
-                                        && (<p><strong>Club Contact: </strong><a href={`mailto:${contact.ClubContact}`}>{contact.ClubContact}</a></p>)
-                                    }
+                    {/* Club Contact */}
+                    {contact?.ClubContact
+                      && contact.ClubContact !== "NULL"
+                      && contact.ClubContact !== contact.OfficerContact 
+                      && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${contact.ClubContact}`}>{contact.ClubContact}</a></p>)
+                    }
 
-                                    {/* Club President */}
-                                    {contact?.OfficerContact
-                                        && contact.OfficerContact !== "NULL"
-                                        && (<p><strong>Club President: </strong><a href={`mailto:${contact.OfficerContact}`}>{contact.OfficerContact}</a></p>)
-                                    }
-                                    
-                                    {/* Website */}
-                                    {website?.URL
-                                        && website.URL !== "NULL"
-                                        && (<p><a href={website.URL} target="_blank" rel="noopener noreferrer"><strong>Club Website</strong></a></p>)
-                                    }
-
-                                    {/* Instagram */}
-                                    {instagram?.URL
-                                        && instagram.URL !== "NULL"
-                                        && (<p><a href={instagram.URL} target="_blank" rel="noopener noreferrer"><strong>Instagram</strong></a></p>)
-                                    }
-
-                                </div>
-                            )}
+                    {/* Club President */}
+                    {contact?.OfficerContact
+                      && contact.OfficerContact !== "NULL"
+                      && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${contact.OfficerContact}`}>{contact.OfficerContact}</a></p>)
+                    }
+                                  
+                    <div className="club-list-page-right">
+                      {/* Meeting Times */}
+                      {allMeetingTimes.length > 0 ? (
+                        <div>
+                          <h4><u>Meeting Times (subject to change)</u></h4>
+                          <ul>
+                            {allMeetingTimes.map((time, idx) => (
+                              <li key={idx}>
+                                <strong>{time.DayOfWeek}</strong> - {time.StartTime} to {time.EndTime} @ {time.Location}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                    );
-                })}
-            </div>
-        </div>
-    );
+                        ) : (
+                          <p><i>Meeting times are not currently available for this club.</i></p>
+                        )
+                      }
+
+                      {/* Website */}
+                      {website?.URL
+                        && website.URL !== "NULL"
+                        && (<p><a href={website.URL} target="_blank" rel="noopener noreferrer"><strong>Club Website</strong></a></p>)
+                      }
+
+                      {/* Instagram */}
+                      {instagram?.URL
+                        && instagram.URL !== "NULL"
+                        && (<p><a href={instagram.URL} target="_blank" rel="noopener noreferrer"><strong>Instagram</strong></a></p>)
+                      }
+
+                    </div> {/* club-list-page-right */}
+                  </div> // accordion-content
+                )} {/* accordion-item */}
+              </div> //
+            );
+          })
+        }
+      </div>
+    </div>
+  );
 }
 
 export default ClubListPage;
