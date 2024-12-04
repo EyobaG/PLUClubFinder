@@ -84,12 +84,12 @@ const ClubListPage = () => {
           const contact = contacts.find(contact => contact.ClubID === club.ClubID);
           const description = descriptions.find(description => description.ClubID === club.ClubID);
 
-          // Sorts all websites into regular websites and instagram pages
+          // Sorts allWebsites into regular websites and instagram pages
           const allWebsites = websites.filter(website => website.ClubID === club.ClubID);
           const website = allWebsites.find(website => website.Instagram.data[0] === 0);
           const instagram = allWebsites.find(instagram => instagram.Instagram.data[0] === 1);
 
-          // Filter and display the meeting times for the current club
+          // Filter the meeting times for the current club
           const allMeetingTimes = sortedMeetingTimes.filter(time => time.ClubID === club.ClubID);
 
           // Accordion Items
@@ -97,72 +97,70 @@ const ClubListPage = () => {
             <div key={club.ClubID} className="accordion-item">
               <div className="accordion-header" onClick={() => toggleAccordion(index)}>
                 {club.ClubName}
-                </div>
-                {activeIndex === index && (
-                  <div className="accordion-content">
+              </div>
+              {activeIndex === index && (
+                <div className="accordion-content">
 
-                    {/* Description */}
-                    {description?.Description
-                      && description.Description !== "NULL" ? (
-                      <p>{description.Description}</p>
+                  {/* Description */}
+                  {description?.Description
+                    && description.Description !== "NULL" ? (
+                    <p>{description.Description}</p>
+                    ) : (
+                      <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
+                    )
+                  }
+
+                  {/* Club Contact */}
+                  {contact?.ClubContact
+                    && contact.ClubContact !== "NULL"
+                    && contact.ClubContact !== contact.OfficerContact 
+                    && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${contact.ClubContact}`}>{contact.ClubContact}</a></p>)
+                  }
+
+                  {/* Club President */}
+                  {contact?.OfficerContact
+                    && contact.OfficerContact !== "NULL"
+                    && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${contact.OfficerContact}`}>{contact.OfficerContact}</a></p>)
+                  }
+
+                  {/* Websites */}
+                  { (website?.URL || instagram?.URL) && (
+                      <p><strong>Websites: </strong>
+                        {instagram?.URL && <a href={instagram.URL} target="_blank" rel="noopener noreferrer">Instagram</a>}
+                        {website?.URL && instagram?.URL && ', '}
+                        {website?.URL && <a href={website.URL} target="_blank" rel="noopener noreferrer">Club Site</a>}
+                        
+                      </p>
+                  )}
+                                
+                  <div className="club-list-page-left">
+
+                    {/* Meeting Times */}
+                    {allMeetingTimes.length > 0 ? (
+                      <div>
+                        <strong><u>Meeting Times (subject to change)</u></strong>
+                        <ul>
+                          {allMeetingTimes.map((time, idx) => (
+                            <li key={idx}>
+                              <strong>{time.DayOfWeek}</strong> - {time.StartTime} to {time.EndTime} @ {time.Location}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                       ) : (
-                        <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
+                        <p><i>Meeting times are not currently available for this club.</i></p>
                       )
                     }
 
-                    {/* Club Contact */}
-                    {contact?.ClubContact
-                      && contact.ClubContact !== "NULL"
-                      && contact.ClubContact !== contact.OfficerContact 
-                      && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${contact.ClubContact}`}>{contact.ClubContact}</a></p>)
-                    }
-
-                    {/* Club President */}
-                    {contact?.OfficerContact
-                      && contact.OfficerContact !== "NULL"
-                      && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${contact.OfficerContact}`}>{contact.OfficerContact}</a></p>)
-                    }
-                                  
-                    <div className="club-list-page-right">
-                      {/* Meeting Times */}
-                      {allMeetingTimes.length > 0 ? (
-                        <div>
-                          <h4><u>Meeting Times (subject to change)</u></h4>
-                          <ul>
-                            {allMeetingTimes.map((time, idx) => (
-                              <li key={idx}>
-                                <strong>{time.DayOfWeek}</strong> - {time.StartTime} to {time.EndTime} @ {time.Location}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        ) : (
-                          <p><i>Meeting times are not currently available for this club.</i></p>
-                        )
-                      }
-
-                      {/* Website */}
-                      {website?.URL
-                        && website.URL !== "NULL"
-                        && (<p><a href={website.URL} target="_blank" rel="noopener noreferrer"><strong>Club Website</strong></a></p>)
-                      }
-
-                      {/* Instagram */}
-                      {instagram?.URL
-                        && instagram.URL !== "NULL"
-                        && (<p><a href={instagram.URL} target="_blank" rel="noopener noreferrer"><strong>Instagram</strong></a></p>)
-                      }
-
-                    </div> {/* club-list-page-right */}
-                  </div> // accordion-content
-                )} {/* accordion-item */}
-              </div> //
-            );
-          })
-        }
-      </div>
-    </div>
-  );
-}
+                  </div> {/* club-list-page-right */}
+                </div> // accordion-content
+              )} {/* activeIndex */}
+            </div> // accordion-item
+          ); // interior return
+        })} {/* clubs map */}
+      </div> {/* accordion */}
+    </div> // club-list-page
+  ); // exterior return
+} // ClubListPage function
 
 export default ClubListPage;
