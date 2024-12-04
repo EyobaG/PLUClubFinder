@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style/ClubListPage.css';
 import '../style/Accordion.css';
+import { useLocation } from "react-router-dom";
 
 // Searches the backend via url to fetch data from our database
 const fetchData = async (url, setState, errorMessage) => {

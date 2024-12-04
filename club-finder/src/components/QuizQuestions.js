@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import '../style/QuizQuestions.css';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function QuizQuestion() {
   // State to track the current question and answers
@@ -189,7 +190,10 @@ function QuizQuestion() {
         </div>
       ) : (
         <div>
-          <h2>Redirect failed</h2>
+          <h2>Redirect failed. Click the link below</h2>
+          <Link to="/filter" state={{ answers }} classname="Failsafe">
+            Link
+          </Link>
         </div>
       )}
     </div>
