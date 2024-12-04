@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import '../style/QuizQuestions.css';
+import { useNavigate } from "react-router-dom";
 
 function QuizQuestion() {
   // State to track the current question and answers
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [missingFlag, setMissingFlag] = useState(false);
+  const navigate = useNavigate();
 
   // Quiz questions with varying input types
   const questions = [
@@ -125,6 +127,8 @@ function QuizQuestion() {
         } else {
           setCurrentQuestion((prev) => prev + 2);
         }
+      } else if (currentQuestion + 1 === questions.length) {
+        navigate("/filter", { state: { answers } });
       } else {
         setCurrentQuestion((prev) => prev + 1); // Proceed to the next question normally
       }
