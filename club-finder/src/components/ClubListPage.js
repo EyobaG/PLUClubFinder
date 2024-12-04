@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../style/ClubListPage.css';
 import '../style/Accordion.css';
 
+// Searches the backend via url to fetch data from our database
 const fetchData = async (url, setState, errorMessage) => {
   try {
     const response = await fetch(url);
@@ -16,7 +17,11 @@ const fetchData = async (url, setState, errorMessage) => {
   }
 };
 
+// Main
 const ClubListPage = () => {
+
+  // Initializing all arrays needed to store incoming data
+  const [activeIndex, setActiveIndex] = useState(null);
   const [clubs, setClubs] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
@@ -24,8 +29,8 @@ const ClubListPage = () => {
   const [meetingTimes, setMeetingTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(null);
 
+  // Searches all necessary api pages for club data
   useEffect(() => {
     const searchAPI = async () => {
       try {
@@ -38,14 +43,15 @@ const ClubListPage = () => {
         ]);
         setLoading(false);
       } catch (error) {
-        setError("Failed to fetch data");
-        setLoading(false); // Stop loading even in case of an error
+        setError(error);
+        setLoading(false);
       }
     };
 
     searchAPI();
   }, []);
 
+  // Sets an accordion menu's index to 'active', triggering it to expan
   const toggleAccordion = (index) => {
     if (activeIndex === index) {
       setActiveIndex(null);
@@ -62,6 +68,20 @@ const ClubListPage = () => {
     return <div>{error}</div>;
   }
 
+  // Converts a time from military time to AMPM time
+  const convertTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+
+    const isAM = hours < 12;
+    const newHour = hours % 12 || 12;
+    const ampm = isAM ? 'AM' : 'PM';
+
+    const minutesFormatted = minutes.toString().padStart(2, '0');
+
+    return `${newHour}:${minutesFormatted} ${ampm}`;
+  };
+
+  // Orders an array based on the day of the week (starting with Sunday)
   const sortMeetingTimes = (meetingTimes) => {
     const dayOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   
@@ -69,7 +89,6 @@ const ClubListPage = () => {
       const dayIndexA = dayOrder.indexOf(a.DayOfWeek);
       const dayIndexB = dayOrder.indexOf(b.DayOfWeek);
   
-      // Compare based on the day of the week order
       return dayIndexA - dayIndexB;
     });
   };
@@ -114,21 +133,21 @@ const ClubListPage = () => {
                   {contact?.ClubContact
                     && contact.ClubContact !== "NULL"
                     && contact.ClubContact !== contact.OfficerContact 
-                    && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${contact.ClubContact}`}>{contact.ClubContact}</a></p>)
+                    && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${contact.ClubContact}`}><i>{contact.ClubContact}</i></a></p>)
                   }
 
                   {/* Club President */}
                   {contact?.OfficerContact
                     && contact.OfficerContact !== "NULL"
-                    && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${contact.OfficerContact}`}>{contact.OfficerContact}</a></p>)
+                    && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${contact.OfficerContact}`}><i>{contact.OfficerContact}</i></a></p>)
                   }
 
                   {/* Websites */}
                   { (website?.URL || instagram?.URL) && (
-                      <p><strong>Websites: </strong>
-                        {instagram?.URL && <a href={instagram.URL} target="_blank" rel="noopener noreferrer">Instagram</a>}
+                      <p><strong><u>Websites:</u> </strong>
+                        {instagram?.URL && <a href={instagram.URL} target="_blank" rel="noopener noreferrer"><i>Instagram</i></a>}
                         {website?.URL && instagram?.URL && ', '}
-                        {website?.URL && <a href={website.URL} target="_blank" rel="noopener noreferrer">Club Site</a>}
+                        {website?.URL && <a href={website.URL} target="_blank" rel="noopener noreferrer"><i>Club Site</i></a>}
                         
                       </p>
                   )}
@@ -142,13 +161,15 @@ const ClubListPage = () => {
                         <ul>
                           {allMeetingTimes.map((time, idx) => (
                             <li key={idx}>
-                              <strong>{time.DayOfWeek}</strong> - {time.StartTime} to {time.EndTime} @ {time.Location}
+                              <strong>{time.DayOfWeek}</strong> - {convertTime(time.StartTime)} to {convertTime(time.EndTime)} @ {time.Location}
                             </li>
                           ))}
                         </ul>
                       </div>
                       ) : (
-                        <p><i>Meeting times are not currently available for this club.</i></p>
+                        <div className="club-list-page">
+                          <i>Meeting times are not currently available for this club.</i>
+                        </div>
                       )
                     }
 
@@ -161,6 +182,6 @@ const ClubListPage = () => {
       </div> {/* accordion */}
     </div> // club-list-page
   ); // exterior return
-} // ClubListPage function
+} // Main
 
 export default ClubListPage;
