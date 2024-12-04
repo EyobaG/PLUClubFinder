@@ -1,3 +1,10 @@
+/* TODO:
+ * 
+ * - Fix duplicate clubs appearing b/c of them having multiple tags
+ * - Implement websites and meeting times in the accordion
+ * - Fix logic/db pertaining to athletic and athleticserious/nonserious tags
+ * */
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../style/ClubListPage.css';
@@ -52,7 +59,7 @@ const FilteredList = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(answers), // Send the quiz answers to the server
+          body: JSON.stringify(answers),
         });
 
         if (!response.ok) {
@@ -60,7 +67,7 @@ const FilteredList = () => {
         }
 
         const data = await response.json();
-        setClubs(data); // Set the fetched clubs data to state
+        setClubs(data);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -81,7 +88,6 @@ const FilteredList = () => {
     }
   };
 
-  // Handle loading and error states
   if (loading) {
     return <div>Loading...</div>;
   }
