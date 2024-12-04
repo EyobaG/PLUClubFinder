@@ -35,8 +35,8 @@ function App() {
           <Route path="/question" element={<QuizQuestions />} />
           <Route path="/filter" element={<FilteredList />}/>
         </Routes>
+        <Footer />
       </div>
-      <Footer />
     </Router>
   );
 }
