@@ -1,45 +1,93 @@
 .search-page {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 900px; /* Set a maximum width to limit content expansion */
+  margin: 0 auto; /* Center content horizontally */
+}
+
+h1 {
   text-align: center;
-  margin-top: 50px;
+  margin-bottom: 20px;
 }
 
-.search-page h1 {
-  font-size: 2rem;
-  color: #FF9800;
+.tags-selection {
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-.search-input {
-  padding: 10px;
-  font-size: 1rem;
-  margin: 20px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.tags-selection label {
+  margin-right: 15px;
 }
 
-.search-btn {
+button {
   padding: 10px 20px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #FF9800;
+  background-color: #4CAF50;
+  color: white;
   border: none;
+  cursor: pointer;
+  font-size: 16px;
   border-radius: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.clubs-list {
+  margin-top: 20px;
+}
+
+.club-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.club-item:hover {
+  background-color: #f1f1f1;
+}
+
+.club-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.search-btn:hover {
-  background-color: #F57C00;
+.club-header span {
+  font-size: 18px;
+  color: #333;
 }
 
-.checkbox-container {
-  margin-left: 450px;
-  margin-right: 450px;
-  display: flex;
-  flex-wrap: wrap; /* Allows wrapping when there are too many items */
-  gap: 15px; /* Space between the checkboxes */
-  justify-content: center;
+.club-details {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 2px solid #4CAF50;
 }
 
-.checkbox-container label {
-  display: flex;
-  align-items: center;
+.club-details p {
+  margin: 5px 0;
+}
+
+.club-details a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.club-details a:hover {
+  text-decoration: underline;
+}
+
+.clubs-list .club-item .club-details {
+  display: none; /* Initially hide the club details */
+}
+
+.clubs-list .club-item.open .club-details {
+  display: block; /* Show details when the club item is clicked */
 }

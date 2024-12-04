@@ -114,7 +114,6 @@ function SearchPage() {
       <h1>Search for Clubs</h1>
 
       <div className="tags-selection">
-        <h3>Select Tags to Filter Clubs</h3>
         {renderTags()}
       </div>
 
