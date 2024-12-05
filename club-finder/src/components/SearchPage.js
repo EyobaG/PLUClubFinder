@@ -111,7 +111,7 @@ function SearchPage() {
 
   return (
     <div className="search-page">
-      <h1>Search for Clubs</h1>
+      <h1>Search by tag</h1>
 
       <div className="tags-selection">
         {renderTags()}
