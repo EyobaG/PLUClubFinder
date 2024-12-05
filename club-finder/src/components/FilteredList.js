@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import '../style/ClubListPage.css';
 import '../style/Accordion.css';
 
+
 // Function to fetch filtered data
 const fetchData = async (url, setState, errorMessage) => {
   try {
@@ -136,7 +137,7 @@ const FilteredList = () => {
           return (
             <div key={`${club.ClubID}-${index}`} className="accordion-item">
               <div className="accordion-header" onClick={() => toggleAccordion(index)}>
-                {club.ClubName}, {club.ClubID}
+                {club.ClubName}
               </div>
               {activeIndex === index && (
                 <div className="accordion-content">
