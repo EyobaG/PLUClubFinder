@@ -14,8 +14,6 @@ function Footer() {
           <p><strong>Clubs and Organizations</strong></p>
           <p>Phone: 253-535-7200</p>
           <p>Email: <a href="mailto:engage@plu.edu">engage@plu.edu</a></p>
-          <p>Anderson University Center, Room 171</p>
-          <p>Tacoma, WA 98447-0003</p>
         </div>
         <div className="footer-section">
           <h3>Office Hours</h3>

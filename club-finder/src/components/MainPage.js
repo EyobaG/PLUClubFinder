@@ -4,7 +4,6 @@ import "../style/MainPage.css";
 import FeaturedClubs from './FeaturedClubs.js';
 
 const MainPage = () => {
-  const sampleClubs = ["Drama Club", "Chess Club", "Coding Club", "Photography Club"];
   return (
     <div className="main-page">
       <div className="welcome">

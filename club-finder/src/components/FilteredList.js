@@ -1,9 +1,17 @@
+/* TODO:
+ * 
+ * - Fix duplicate clubs appearing
+ * - Implement websites and meeting times in the accordion
+ * - Fix logic/db pertaining to athletic and athleticserious/nonserious tags
+ * */
+
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../style/ClubListPage.css';
 import '../style/Accordion.css';
-import { useLocation } from "react-router-dom";
 
-// Searches the backend via url to fetch data from our database
+
+// Function to fetch filtered data
 const fetchData = async (url, setState, errorMessage) => {
   try {
     const response = await fetch(url);
@@ -18,30 +26,46 @@ const fetchData = async (url, setState, errorMessage) => {
   }
 };
 
-// Main
-const FilteredList = () => {
 
-  // Initializing all arrays needed to store incoming data
+// Main FilteredList Component
+const FilteredList = () => {
+  const location = useLocation(); // Access location object
+  const { answers } = location.state || {};
+
   const [activeIndex, setActiveIndex] = useState(null);
   const [clubs, setClubs] = useState([]);
-  const [contacts, setContacts] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);
   const [websites, setWebsites] = useState([]);
   const [meetingTimes, setMeetingTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Searches all necessary api pages for club data
+  // Fetch filtered club data based on quiz answers
   useEffect(() => {
     const searchAPI = async () => {
       try {
-        await Promise.all([
-          fetchData('http://localhost:5000/api/clubs', setClubs, 'Error fetching clubs data'),
-          fetchData('http://localhost:5000/api/contacts', setContacts, 'Error fetching contacts data'),
-          fetchData('http://localhost:5000/api/descriptions', setDescriptions, 'Error fetching descriptions data'),
-          fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data'),
-          fetchData('http://localhost:5000/api/meeting-times', setMeetingTimes, 'Error fetching meeting time data')
-        ]);
+        // Fetch club data
+        const response = await fetch('http://localhost:5000/api/quiz-answers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(answers),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching clubs data');
+        }
+
+        const data = await response.json();
+        setClubs(data);
+
+        // Fetch websites and meeting times concurrently
+        const websitesPromise = fetchData('http://localhost:5000/api/websites', setWebsites, 'Error fetching websites data');
+        const meetingTimesPromise = fetchData('http://localhost:5000/api/meeting-times', setMeetingTimes, 'Error fetching meeting time data');
+
+        // Wait for both fetches to complete
+        await Promise.all([websitesPromise, meetingTimesPromise]);
+
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -49,10 +73,11 @@ const FilteredList = () => {
       }
     };
 
-    searchAPI();
-  }, []);
+    if (answers) {
+      searchAPI(); // Only fetch if `answers` are available
+    }
+  }, [answers]);
 
-  // Sets an accordion menu's index to 'active', triggering it to expan
   const toggleAccordion = (index) => {
     if (activeIndex === index) {
       setActiveIndex(null);
@@ -66,7 +91,7 @@ const FilteredList = () => {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div>{error.message}</div>;
   }
 
   // Converts a time from military time to AMPM time
@@ -97,52 +122,46 @@ const FilteredList = () => {
   const sortedMeetingTimes = sortMeetingTimes(meetingTimes);
 
   return (
-    <div className="club-list-page">
-      <h1>Clubs You Might Be Interested In</h1>
+    <div className="filtered-list-page">
+      <h1>Your Results!</h1>
       <div className="accordion">
         {clubs.map((club, index) => {
-          const contact = contacts.find(contact => contact.ClubID === club.ClubID);
-          const description = descriptions.find(description => description.ClubID === club.ClubID);
-
-          // Sorts allWebsites into regular websites and instagram pages
+          // Filter and find websites for each club
           const allWebsites = websites.filter(website => website.ClubID === club.ClubID);
           const website = allWebsites.find(website => website.Instagram.data[0] === 0);
           const instagram = allWebsites.find(instagram => instagram.Instagram.data[0] === 1);
 
           // Filter the meeting times for the current club
           const allMeetingTimes = sortedMeetingTimes.filter(time => time.ClubID === club.ClubID);
-
-          // Accordion Items
+  
           return (
-            <div key={club.ClubID} className="accordion-item">
+            <div key={`${club.ClubID}-${index}`} className="accordion-item">
               <div className="accordion-header" onClick={() => toggleAccordion(index)}>
                 {club.ClubName}
               </div>
               {activeIndex === index && (
                 <div className="accordion-content">
-
+  
                   {/* Description */}
-                  {description?.Description
-                    && description.Description !== "NULL" ? (
-                    <p>{description.Description}</p>
-                    ) : (
-                      <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
-                    )
-                  }
-
+                  {club.Description && club.Description !== 'NULL' ? (
+                    <p>{club.Description}</p>
+                  ) : (
+                    <p><i>No description available right now. Try contacting the club's leaders for more information!</i></p>
+                  )}
+  
                   {/* Club Contact */}
-                  {contact?.ClubContact
-                    && contact.ClubContact !== "NULL"
-                    && contact.ClubContact !== contact.OfficerContact 
-                    && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${contact.ClubContact}`}><i>{contact.ClubContact}</i></a></p>)
+                  {club?.ClubContact
+                    && club.ClubContact !== "NULL"
+                    && club.ClubContact !== club.PresidentEmail 
+                    && (<p><strong><u>Club Contact:</u></strong> <a href={`mailto:${club.ClubContact}`}><i>{club.ClubContact}</i></a></p>)
                   }
-
+  
                   {/* Club President */}
-                  {contact?.OfficerContact
-                    && contact.OfficerContact !== "NULL"
-                    && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${contact.OfficerContact}`}><i>{contact.OfficerContact}</i></a></p>)
+                  {club?.PresidentEmail
+                    && club.PresidentEmail !== "NULL"
+                    && (<p><strong><u>Club President:</u></strong> <a href={`mailto:${club.PresidentEmail}`}><i>{club.PresidentEmail}</i></a></p>)
                   }
-
+  
                   {/* Websites */}
                   { (website?.URL || instagram?.URL) && (
                       <p><strong><u>Websites:</u> </strong>
@@ -152,9 +171,9 @@ const FilteredList = () => {
                         
                       </p>
                   )}
-                                
+  
                   <div className="club-list-page-left">
-
+  
                     {/* Meeting Times */}
                     {allMeetingTimes.length > 0 ? (
                       <div>
@@ -173,16 +192,16 @@ const FilteredList = () => {
                         </div>
                       )
                     }
-
-                  </div> {/* club-list-page-right */}
-                </div> // accordion-content
-              )} {/* activeIndex */}
-            </div> // accordion-item
-          ); // interior return
-        })} {/* clubs map */}
-      </div> {/* accordion */}
-    </div> // club-list-page
-  ); // exterior return
-} // Main
+                    
+                  </div> {/* club-list-page-left */}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 export default FilteredList;

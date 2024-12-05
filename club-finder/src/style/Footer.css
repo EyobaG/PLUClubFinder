@@ -1,15 +1,25 @@
+/* Make sure the html and body take up the full height and use flexbox for layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Footer Styles */
 .footer {
   background-color: #333;
   color: #fff;
   padding: 40px 20px;
   border-top: 2px solid #444;
+  margin-top: auto; /* Ensure it sticks to the bottom of the page */
 }
 
 .footer-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -34,4 +44,21 @@
 
 .footer a:hover {
   text-decoration: underline;
+}
+
+/* Ensure footer is always at the bottom of the page even when content is short */
+.main-content {
+  flex-grow: 1; /* Makes the main content area expand to fill the space */
+}
+
+/* Optional: Make sure there's padding on the sides of the footer */
+.footer .footer-grid {
+  padding: 0 20px;
+}
+
+/* Optional: Style for small screens */
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr; /* Adjust grid columns for smaller screens */
+  }
 }
