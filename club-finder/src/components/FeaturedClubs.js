@@ -17,7 +17,7 @@ const FeaturedClubs = () => {
       name: 'PLU Young Life',
       description: 'Young Life creates community, fun, and explores the Christian faith.',
       imgSrc: young, 
-      clubLink: 'http://ylcollegetacoma.younglife.org'
+      clubLink: 'https://www.instagram.com/plucollegeyounglife/?hl=en'
     },
     {
       name: 'GREAN Club',
